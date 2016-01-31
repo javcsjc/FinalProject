@@ -10,7 +10,7 @@ This app provides dymanic filtering of a headcount file based on Geographical Re
 
 - Source file "Headcount.csv" was built in-house. Not from a public source.
 - Shiny apps address:http://javcsjc.shinyapps.io/FinalProject
-- gitHub address:
+- gitHub address: https://github.com/javcsjc/FinalProject
 
 
 ui.R
