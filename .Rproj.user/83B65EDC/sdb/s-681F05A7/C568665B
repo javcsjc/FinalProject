@@ -1,0 +1,17 @@
+{
+    "contents" : "library(shiny)\nlibrary(DT)\nheadcount <- read.csv(\"./data/Headcount.csv\")\n\n# Define the overall UI\nshinyUI(\n        fluidPage(\n                titlePanel(\"Headcount Analysis\"),\n                sidebarLayout(\n                        sidebarPanel(\n                                selectInput(\"region\",\n                                            \"Region:\",\n                                            c(\"All\",\n                                              unique(as.character(headcount$Region)))),\n                                br(),\n                                selectInput(\"country\",\n                                            \"Country:\",\n                                            c(\"All\",\n                                              unique(as.character(headcount$Country)))),\n                                br(),\n                                selectInput(\"state\",\n                                            \"State:\",\n                                            c(\"All\",\n                                              unique(as.character(headcount$State))))\n                        ),\n                        \n                        # Show a tabset that includes a plot, summary, and table view\n                        # of the generated distribution\n                        mainPanel(\n                                tabsetPanel(type = \"tabs\", \n                                            tabPanel(\"Table\", DT::dataTableOutput(\"table\")),\n                                            tabPanel(\"Summary\", verbatimTextOutput(\"summary\"))\n                                )\n                        )\n                )\n        ))",
+    "created" : 1454270983391.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "589475640",
+    "id" : "C568665B",
+    "lastKnownWriteTime" : 1454271054,
+    "path" : "~/Desktop/Coursera/Data Products/FinalProject/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,108 @@
+Headcount Analysis - Course Project for Shiny Application
+========================================================
+author: Jose Alberto Valdez Crespo
+date: January 30, 2016
+
+Project Overview
+========================================================
+
+This app provides dymanic filtering of a headcount file based on Geographical Region, Country & State. It has a couple of tabs that represent a dynamic table view of the data, plus a summary view.
+
+- Source file "Headcount.csv" was built in-house. Not from a public source.
+- Shiny apps address:http://javcsjc.shinyapps.io/FinalProject
+- gitHub address:
+
+
+ui.R
+========================================================
+
+```{r}
+library(shiny)
+library(DT)
+headcount <- read.csv("./data/Headcount.csv")
+
+# Define the overall UI
+shinyUI(
+        fluidPage(
+                titlePanel("Headcount Analysis"),
+                sidebarLayout(
+                        sidebarPanel(
+                                selectInput("region",
+                                            "Region:",
+                                            c("All",
+                                              unique(as.character(headcount$Region)))),
+                                br(),
+                                selectInput("country",
+                                            "Country:",
+                                            c("All",
+                                              unique(as.character(headcount$Country)))),
+                                br(),
+                                selectInput("state",
+                                            "State:",
+                                            c("All",
+                                              unique(as.character(headcount$State))))
+                                ),
+                        
+                        # Show a tabset that includes a plot, summary, and table view
+                        # of the generated distribution
+                        mainPanel(
+                                tabsetPanel(type = "tabs", 
+                                            tabPanel("Table", DT::dataTableOutput("table")),
+                                            tabPanel("Summary", verbatimTextOutput("summary"))
+                                        )
+                                )
+        )
+))
+```
+
+server.R
+========================================================
+
+```{r}
+library(shiny)
+library(DT)
+headcount <- read.csv("./data/Headcount.csv")
+
+# Define a server for the Shiny app
+shinyServer(function(input, output) {
+        headcountInput <- reactive({
+                data <- headcount
+                if (input$region != "All") {
+                        data <- data[data$Region == input$region,]
+                }
+                if (input$country != "All") {
+                        data <- data[data$Country == input$country,]
+                }
+                if (input$state != "All") {
+                        data <- data[data$State == input$state,]
+                }
+                data
+        })
+        
+        # Filter data based on selections
+        output$table <- DT::renderDataTable(DT::datatable({
+                data <- headcount
+                if (input$region != "All") {
+                        data <- data[data$Region == input$region,]
+                }
+                if (input$country != "All") {
+                        data <- data[data$Country == input$country,]
+                }
+                if (input$state != "All") {
+                        data <- data[data$State == input$state,]
+                }
+                data
+        }))
+        # Generate a summary of the data
+        output$summary <- renderPrint({
+                summary(headcountInput())
+        })
+})
+```
+
+Last Thoughts
+========================================================
+
+- Started working on a Machine Learning comparison project, but ran into a couple of problems: 1.- Since I was comparing multiple algorithms, it took too long to run.Tried different things but none work as I expected 2.- ERROR: cannot coerce type 'closure' to vector of type 'character'.
+- Had to switch to another project at the very last minute. On this one, tried hard to create a ggplot of the dynamic data but ran into errors like: "ggplot2 doesn't know how to deal with data of class reactive".Just simply ran out of time.
+- Good luck everyone!

@@ -1,0 +1,17 @@
+{
+    "contents" : "library(shiny)\nlibrary(DT)\nheadcount <- read.csv(\"./data/Headcount.csv\")\n\n# Define a server for the Shiny app\nshinyServer(function(input, output) {\n        headcountInput <- reactive({\n                data <- headcount\n                if (input$region != \"All\") {\n                        data <- data[data$Region == input$region,]\n                }\n                if (input$country != \"All\") {\n                        data <- data[data$Country == input$country,]\n                }\n                if (input$state != \"All\") {\n                        data <- data[data$State == input$state,]\n                }\n                data\n        })\n        \n        # Filter data based on selections\n        output$table <- DT::renderDataTable(DT::datatable({\n                data <- headcount\n                if (input$region != \"All\") {\n                        data <- data[data$Region == input$region,]\n                }\n                if (input$country != \"All\") {\n                        data <- data[data$Country == input$country,]\n                }\n                if (input$state != \"All\") {\n                        data <- data[data$State == input$state,]\n                }\n                data\n        }))\n        # Generate a summary of the data\n        output$summary <- renderPrint({\n                summary(headcountInput())\n        })\n})",
+    "created" : 1454270983894.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1677318143",
+    "id" : "52417534",
+    "lastKnownWriteTime" : 1454271080,
+    "path" : "~/Desktop/Coursera/Data Products/FinalProject/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
